@@ -1,0 +1,77 @@
+$grid-columns: 31;
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+.mod_article {
+  position: relative;
+
+  & > div {
+    box-sizing: content-box;
+    max-width: 1200px;
+    margin: 0 auto;
+    @include respond-to-map($article-child-padding-x);
+
+    & > div {
+      background: #FFF;
+      position: relative;
+      z-index: 2;
+      padding-top: 24px;
+      padding-bottom: 24px;
+
+      & > div {
+        position: relative;
+        z-index: 3;
+      }
+    }
+
+    &:before, &:after, & > div:before, & > div:after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      top: 0;
+    }
+
+    &:before, & > div:before {
+      left: 0;
+    }
+
+    &:after, & > div:after {
+      right: 0;
+    }
+
+    @each $bp-name, $bp-value in $grid-breakpoints {
+      @media only screen and (min-width: #{$bp-value}) {
+
+        $bg-prefix: if($bp-name=='xs', bg, bg-#{$bp-name});
+        $bg-left-prefix: if($bp-name=='xs', bg-left, bg-left-#{$bp-name});
+        $bg-right-prefix: if($bp-name=='xs', bg-right, bg-right-#{$bp-name});
+
+        @each $color-name, $color-value in $colormap {
+          &.#{$bg-prefix}-#{$color-name}, &.#{$bg-prefix}-#{$color-name} > div, & > div > div.#{$bg-prefix}-#{$color-name} {
+            background-color: $color-value;
+          }
+
+          @for $columns from 1 through $grid-columns {
+            &.#{$bg-left-prefix}-#{$color-name}-#{$columns}:before,
+            &.#{$bg-right-prefix}-#{$color-name}-#{$columns}:after,
+            &.#{$bg-left-prefix}-#{$color-name}-#{$columns} > div:before,
+            &.#{$bg-right-prefix}-#{$color-name}-#{$columns} > div:after {
+              background-color: $color-value;
+            }
+            &.#{$bg-left-prefix}-#{$color-name}-#{$columns} > div:before,
+            &.#{$bg-right-prefix}-#{$color-name}-#{$columns} > div:after {
+              width: calc(100% / #{$grid-columns} * #{$columns});
+            }
+          }
+        }
+      }
+    }
+  }
+}
