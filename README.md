@@ -13,5 +13,5 @@ Sass for gridbased backgroundcolors based on bootstrap
 
 ## Set background color for right column
 ```
-.bg-left-{breakpoint}-{color}-{columns}
+.bg-right-{breakpoint}-{color}-{columns}
 ```
